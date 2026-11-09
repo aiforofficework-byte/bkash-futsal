@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Futsal Tournament — Lottery Control Panel</title>
+<link rel="stylesheet" href="css/common.css">
+<link rel="stylesheet" href="css/admin.css">
+</head>
+<body class="admin">
+
+<!-- ============================================================= -->
+<!--  TOP BAR                                                      -->
+<!-- ============================================================= -->
+<header class="topbar">
+  <div class="brand">
+    <div class="brand-mark" id="brandMark">
+      <img class="logo-fit hidden" id="brandMarkImg" alt="">
+      <span id="brandMarkFallback">F</span>
+    </div>
+    <div class="brand-text">
+      <h1 id="brandTitle">FUTSAL CARNIVAL</h1>
+      <p>MANUAL LOTTERY &amp; LIVE DRAW CONTROL PANEL</p>
+    </div>
+  </div>
+
+  <div class="topbar-stats">
+    <div class="stat">
+      <span class="stat-label">REGISTERED</span>
+      <span class="stat-value" id="statRegistered">0 / 32</span>
+    </div>
+    <div class="stat">
+      <span class="stat-label">DRAWN</span>
+      <span class="stat-value" id="statSelected">0 / 32</span>
+    </div>
+    <div class="stat">
+      <span class="stat-label">REMAINING</span>
+      <span class="stat-value" id="statRemaining">0</span>
+    </div>
+    <div class="stat">
+      <span class="stat-label">PROGRESS</span>
+      <span class="stat-value" id="statProgress">0%</span>
+    </div>
+  </div>
+
+  <div class="topbar-actions">
+    <button class="btn btn-ghost" id="btnOpenLive">OPEN LIVE RESULT</button>
+    <button class="btn btn-ghost" id="btnOpenBoard">OPEN DRAW BOARD</button>
+    <button class="btn btn-pink" id="btnSaveTop">SAVE DRAW</button>
+  </div>
+</header>
+
+<!-- ============================================================= -->
+<!--  TABS                                                         -->
+<!-- ============================================================= -->
+<nav class="tabs" role="tablist">
+  <button class="tab is-active" data-tab="teams"    role="tab">01 &nbsp;TEAM MANAGEMENT</button>
+  <button class="tab"           data-tab="lottery"  role="tab">02 &nbsp;MANUAL LOTTERY DRAW</button>
+  <button class="tab"           data-tab="branding" role="tab">03 &nbsp;BRANDING &amp; EXPORT</button>
+</nav>
+
+<main class="shell">
+
+  <!-- ========================================================== -->
+  <!--  TAB 1 : TEAM MANAGEMENT                                   -->
+  <!-- ========================================================== -->
+  <section class="panel-page is-active" data-page="teams">
+
+    <div class="grid-2">
+      <!-- -------- registration form -------- -->
+      <div class="card">
+        <div class="card-head">
+          <h2>REGISTER A TEAM</h2>
+          <span class="chip" id="chipSlots">32 SLOTS</span>
+        </div>
+
+        <div class="card-body">
+          <div class="field">
+            <label for="teamName">TEAM NAME</label>
+            <input type="text" id="teamName" maxlength="40" placeholder="e.g. Pathao" autocomplete="off">
+          </div>
+
+          <div class="field">
+            <label for="teamLogoInput">TEAM LOGO <span class="hint">PNG · JPG · JPEG · WEBP</span></label>
+            <div class="upload-row">
+              <div class="upload-preview" id="logoPreview">
+                <span>NO LOGO</span>
+              </div>
+              <div class="upload-actions">
+                <input type="file" id="teamLogoInput" accept="image/png,image/jpeg,image/jpg,image/webp" class="sr-only">
+                <button class="btn btn-outline" id="btnPickLogo">CHOOSE FILE</button>
+                <button class="btn btn-mini" id="btnClearLogo">CLEAR</button>
+                <p class="hint" id="logoFileName">No file selected</p>
+              </div>
+            </div>
+          </div>
+
+          <button class="btn btn-pink btn-block" id="btnAddTeam">+ ADD TEAM</button>
+
+          <hr class="soft-rule">
+
+          <div class="field">
+            <label>BULK IMPORT</label>
+            <p class="hint">
+              Loads every logo found in the <code>/LOGO</code> folder and registers each
+              file name as a team. Requires a local server (VS Code Live Server).
+            </p>
+            <button class="btn btn-outline btn-block" id="btnImportFolder">IMPORT LOGO FOLDER</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- -------- registration progress -------- -->
+      <div class="card">
+        <div class="card-head">
+          <h2>REGISTRATION STATUS</h2>
+        </div>
+        <div class="card-body">
+          <div class="big-progress">
+            <div class="big-progress-top">
+              <span>REGISTERED TEAMS</span>
+              <strong id="regProgressText">0 / 32</strong>
+            </div>
+            <div class="bar"><div class="bar-fill" id="regProgressBar"></div></div>
+            <p class="hint" id="regRemainingText">32 team slots remaining</p>
+          </div>
+
+          <div class="notice warn" id="regWarning">
+            <strong>INCOMPLETE REGISTRATION</strong>
+            <span id="regWarningText">Register all 32 teams before the lottery can begin.</span>
+          </div>
+
+          <div class="notice ok hidden" id="regReady">
+            <strong>READY</strong>
+            <span>All 32 teams are registered. Open the <em>MANUAL LOTTERY DRAW</em> tab to begin.</span>
+          </div>
+
+          <hr class="soft-rule">
+
+          <div class="danger-zone">
+            <h3>DANGER ZONE</h3>
+            <p class="hint">Removes every registered team and clears the draw. Branding is kept.</p>
+            <button class="btn btn-danger btn-block" id="btnClearTeams">DELETE ALL TEAMS</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- -------- registered team list -------- -->
+    <div class="card">
+      <div class="card-head">
+        <h2>REGISTERED TEAMS <span class="count-badge" id="teamListCount">0</span></h2>
+        <div class="search-wrap">
+          <input type="search" id="teamSearch" placeholder="Search team by name…" autocomplete="off">
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="team-table" id="teamList"></div>
+        <p class="empty-state hidden" id="teamListEmpty">No teams registered yet. Add your first team above.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================== -->
+  <!--  TAB 2 : MANUAL LOTTERY DRAW                               -->
+  <!-- ========================================================== -->
+  <section class="panel-page" data-page="lottery">
+
+    <!-- next-selection banner -->
+    <div class="next-banner" id="nextBanner">
+      <div class="next-left">
+        <span class="next-kicker">NEXT SELECTION</span>
+        <div class="next-main">
+          <span class="next-match" id="nextMatchLabel">MATCH-01</span>
+          <span class="next-arrow">&rarr;</span>
+          <span class="next-side" id="nextSideLabel">LEFT TEAM</span>
+        </div>
+        <p class="next-note" id="nextNote">Click a team logo below to place it.</p>
+      </div>
+
+      <div class="next-right">
+        <div class="ring" id="progressRing">
+          <svg viewBox="0 0 120 120" aria-hidden="true">
+            <circle class="ring-track" cx="60" cy="60" r="52"></circle>
+            <circle class="ring-value" cx="60" cy="60" r="52" id="ringValue"></circle>
+          </svg>
+          <div class="ring-text">
+            <strong id="lotteryProgressPct">0%</strong>
+            <span>DRAWN</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- lock overlay shown until 32 teams exist -->
+    <div class="lock-note" id="lotteryLock">
+      <strong>LOTTERY LOCKED</strong>
+      <span id="lotteryLockText">Exactly 32 registered teams are required. </span>
+      <button class="btn btn-outline btn-mini" data-goto-tab="teams">GO TO TEAM MANAGEMENT</button>
+    </div>
+
+    <!-- control buttons -->
+    <div class="control-bar">
+      <button class="btn btn-outline" id="btnUndo">&#8630; UNDO LAST SELECTION</button>
+      <button class="btn btn-warn"   id="btnReset">RESET DRAW</button>
+      <button class="btn btn-pink"   id="btnSave">SAVE DRAW</button>
+      <span class="control-sep"></span>
+      <button class="btn btn-ghost" id="btnOpenLive2">OPEN LIVE RESULT</button>
+      <button class="btn btn-ghost" id="btnOpenBoard2">OPEN DRAW BOARD</button>
+      <label class="flow-toggle" title="After both teams of a match are picked, this tab moves on to the Live Result screen">
+        <input type="checkbox" id="chkAutoFlow" checked>
+        <span>AUTO-ADVANCE TO LIVE RESULT</span>
+      </label>
+      <span class="save-stamp" id="saveStamp"></span>
+    </div>
+
+    <div class="grid-sel">
+      <!-- -------- selection grid -------- -->
+      <div class="card">
+        <div class="card-head">
+          <h2>TEAM SELECTION PANEL</h2>
+          <div class="legend">
+            <span class="legend-item"><i class="dot av"></i>AVAILABLE</span>
+            <span class="legend-item"><i class="dot sel"></i>SELECTED</span>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="selection-grid" id="selectionGrid"></div>
+        </div>
+      </div>
+
+      <!-- -------- 16-match overview -------- -->
+      <div class="card">
+        <div class="card-head">
+          <h2>DRAW OVERVIEW</h2>
+          <span class="chip">16 MATCHES</span>
+        </div>
+        <div class="card-body">
+          <div class="match-overview" id="matchOverview"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================== -->
+  <!--  TAB 3 : BRANDING & EXPORT                                 -->
+  <!-- ========================================================== -->
+  <section class="panel-page" data-page="branding">
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-head"><h2>TOURNAMENT IDENTITY</h2></div>
+        <div class="card-body">
+          <div class="field">
+            <label for="brandTournamentName">TOURNAMENT NAME</label>
+            <input type="text" id="brandTournamentName" maxlength="46" placeholder="FUTSAL CARNIVAL">
+          </div>
+          <div class="field">
+            <label for="brandSubtitle">SUBTITLE</label>
+            <input type="text" id="brandSubtitle" maxlength="52" placeholder="DHAKA 2026">
+          </div>
+          <div class="field">
+            <label for="brandRoundTitle">DRAW BOARD TITLE</label>
+            <input type="text" id="brandRoundTitle" maxlength="28" placeholder="First Round">
+          </div>
+          <div class="field">
+            <label for="brandMatchDate">MATCH DATE <span class="hint">shown under the title</span></label>
+            <input type="text" id="brandMatchDate" maxlength="40" placeholder="Date: 21 Nov 2026">
+          </div>
+          <button class="btn btn-pink btn-block" id="btnSaveBranding">SAVE IDENTITY</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><h2>GRAPHICS</h2></div>
+        <div class="card-body brand-uploads">
+
+          <!-- tournament logo -->
+          <div class="brand-row">
+            <div class="brand-prev logo" id="previewTournamentLogo"><span>NO LOGO</span></div>
+            <div class="brand-meta">
+              <h3>TOURNAMENT LOGO</h3>
+              <p class="hint">Shown on Screen 02 and Screen 03. Transparent PNG recommended.</p>
+              <div class="btn-row">
+                <input type="file" id="inputTournamentLogo" accept="image/png,image/jpeg,image/jpg,image/webp" class="sr-only">
+                <button class="btn btn-outline btn-mini" data-upload="inputTournamentLogo">UPLOAD</button>
+                <button class="btn btn-mini" data-remove="logoKey">REMOVE</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- live result background -->
+          <div class="brand-row">
+            <div class="brand-prev" id="previewLiveBg"><span>DEFAULT</span></div>
+            <div class="brand-meta">
+              <h3>LIVE RESULT BACKGROUND</h3>
+              <p class="hint">Screen 02 stadium backdrop. Best at 1920&times;1080.</p>
+              <div class="btn-row">
+                <input type="file" id="inputLiveBg" accept="image/png,image/jpeg,image/jpg,image/webp" class="sr-only">
+                <button class="btn btn-outline btn-mini" data-upload="inputLiveBg">UPLOAD</button>
+                <button class="btn btn-mini" data-remove="liveBgKey">REMOVE</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- draw board background -->
+          <div class="brand-row">
+            <div class="brand-prev" id="previewBoardBg"><span>DEFAULT</span></div>
+            <div class="brand-meta">
+              <h3>DRAW BOARD BACKGROUND</h3>
+              <p class="hint">Screen 03 stadium backdrop. Best at 1920&times;1080.</p>
+              <div class="btn-row">
+                <input type="file" id="inputBoardBg" accept="image/png,image/jpeg,image/jpg,image/webp" class="sr-only">
+                <button class="btn btn-outline btn-mini" data-upload="inputBoardBg">UPLOAD</button>
+                <button class="btn btn-mini" data-remove="boardBgKey">REMOVE</button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <h2>FULL HD PNG EXPORT</h2>
+        <span class="chip">1920 &times; 1080</span>
+      </div>
+      <div class="card-body">
+        <p class="hint">
+          Both exports are rendered on a dedicated 1920&times;1080 canvas, so no admin
+          control, button or browser UI can ever appear in the saved image.
+        </p>
+        <div class="export-row">
+          <button class="btn btn-pink" id="btnExportLive">EXPORT LIVE RESULT PNG</button>
+          <button class="btn btn-pink" id="btnExportBoard">EXPORT DRAW BOARD PNG</button>
+          <button class="btn btn-outline" id="btnExportJSON">BACKUP DRAW (JSON)</button>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- ============================================================= -->
+<!--  EDIT TEAM MODAL                                              -->
+<!-- ============================================================= -->
+<div class="modal-host hidden" id="editModal">
+  <div class="modal">
+    <h2>EDIT TEAM</h2>
+    <div class="field">
+      <label for="editName">TEAM NAME</label>
+      <input type="text" id="editName" maxlength="40">
+    </div>
+    <div class="field">
+      <label>TEAM LOGO</label>
+      <div class="upload-row">
+        <div class="upload-preview" id="editPreview"><span>NO LOGO</span></div>
+        <div class="upload-actions">
+          <input type="file" id="editLogoInput" accept="image/png,image/jpeg,image/jpg,image/webp" class="sr-only">
+          <button class="btn btn-outline" id="btnEditPick">REPLACE LOGO</button>
+          <p class="hint" id="editFileName">Current logo kept</p>
+        </div>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" id="btnEditCancel">CANCEL</button>
+      <button class="btn btn-pink"  id="btnEditSave">SAVE CHANGES</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================= -->
+<!--  CONFIRM MODAL                                                -->
+<!-- ============================================================= -->
+<div class="modal-host hidden" id="confirmModal">
+  <div class="modal narrow">
+    <h2 id="confirmTitle">CONFIRM</h2>
+    <p id="confirmBody">Are you sure?</p>
+    <div class="modal-actions">
+      <button class="btn btn-ghost"  id="btnConfirmNo">CANCEL</button>
+      <button class="btn btn-danger" id="btnConfirmYes">CONFIRM</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast-host" id="toastHost"></div>
+
+<!-- scripts: order matters -->
+<script src="js/logo-manifest.js"></script>
+<script src="js/database.js"></script>
+<script src="js/storage.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/scene.js"></script>
+<script src="js/export.js"></script>
+<script src="js/teams.js"></script>
+<script src="js/lottery.js"></script>
+<script src="js/branding.js"></script>
+<script src="js/admin.js"></script>
+</body>
+</html>

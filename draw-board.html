@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Complete Draw Board — Futsal Tournament</title>
+<link rel="stylesheet" href="css/common.css">
+<link rel="stylesheet" href="css/draw-board.css">
+</head>
+<body class="presentation">
+
+<div class="stage-host">
+  <!-- authored at exactly 1920 x 1080, then uniformly scaled -->
+  <div class="stage" id="stage">
+
+    <!-- ---------- background ----------
+         The default arena + futsal pitch is painted by the SAME routine
+         that the PNG exporter uses, so the screen and the export are
+         pixel-identical. A custom uploaded background replaces it. -->
+    <canvas class="scene-canvas" id="sceneCanvas" width="1920" height="1080"></canvas>
+    <img class="bg-image hidden" id="bgImage" alt="">
+    <div class="bg-dim hidden" id="bgDim"></div>
+
+    <!-- ---------- title block (matches the artwork) ---------- -->
+    <div class="db-title">
+      <h1 id="roundTitle">First Round</h1>
+      <p id="matchDate">Date: 21 Nov 2026</p>
+    </div>
+
+    <!-- ---------- tournament logo: only when one was uploaded,
+         otherwise the artwork plate already carries the shield -------->
+    <img class="db-tlogo hidden" id="tLogo" alt="">
+    <span class="hidden" id="tName"></span>
+
+    <!-- ---------- 16 match cards (4 columns x 4 rows) ---------- -->
+    <div class="db-grid" id="boardGrid"></div>
+  </div>
+</div>
+
+<!-- Presentation flow: back to the control panel for the next match -->
+<div class="flow-bar" id="flowBar">
+  <button class="flow-btn ghost" id="btnFlowLive">&larr; LIVE RESULT</button>
+  <button class="flow-btn" id="btnFlowNew">+ NEW MATCH DRAW</button>
+</div>
+
+<!-- =============================================================
+     OPERATOR STRIP — hidden from the audience, never exported
+     ============================================================= -->
+<div class="op-strip" id="opStrip">
+  <span class="op-tag">OPERATOR</span>
+  <button class="op-btn" id="btnFull">FULLSCREEN <kbd>F</kbd></button>
+  <button class="op-btn" id="btnExport">EXPORT PNG <kbd>E</kbd></button>
+  <button class="op-btn" id="btnHide">HIDE <kbd>C</kbd></button>
+  <span class="op-state" id="opState">—</span>
+</div>
+
+<div class="toast-host" id="toastHost"></div>
+
+<script src="js/database.js"></script>
+<script src="js/storage.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/scene.js"></script>
+<script src="js/export.js"></script>
+<script src="js/draw-board.js"></script>
+</body>
+</html>

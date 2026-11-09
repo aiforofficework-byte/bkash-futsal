@@ -1,0 +1,28 @@
+# ---------------------------------------------------------------
+# Source material and backups: kept on this machine, never pushed.
+# Nothing in the app loads these at runtime.
+# ---------------------------------------------------------------
+WhatsApp Image*.jpeg
+WhatsApp Image*.jpg
+*.rar
+*.zip
+LOGO_previous/
+LOGO1/
+
+# ---------------------------------------------------------------
+# OS / editor noise
+# ---------------------------------------------------------------
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+.DS_Store
+.vscode/
+*.code-workspace
+
+# ---------------------------------------------------------------
+# Exported PNGs land in your Downloads folder, but just in case
+# ---------------------------------------------------------------
+draw-board-*.png
+live-result-*.png
+futsal-draw-backup.json

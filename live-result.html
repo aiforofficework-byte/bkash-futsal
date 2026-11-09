@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Live Match Result — Futsal Draw</title>
+<link rel="stylesheet" href="css/common.css">
+<link rel="stylesheet" href="css/live-result.css">
+</head>
+<body class="presentation">
+
+<div class="stage-host">
+  <!-- authored at exactly 1920 x 1080, then uniformly scaled -->
+  <div class="stage" id="stage">
+
+    <!-- ---------- background ----------
+         Painted by the SAME routine the PNG exporter uses (js/scene.js),
+         so the screen and the exported image are identical. -->
+    <canvas class="scene-canvas" id="sceneCanvas" width="1920" height="1080"></canvas>
+    <img class="bg-image hidden" id="bgImage" alt="">
+    <div class="bg-dim hidden" id="bgDim"></div>
+
+    <!-- ---------- header (matches the artwork) ---------- -->
+    <div class="db-title">
+      <h1 id="roundTitle">First Round</h1>
+      <p id="matchDate">Date: 21 Nov 2026</p>
+    </div>
+
+    <img class="lr-tlogo hidden" id="tLogo" alt="">
+    <span class="hidden" id="tName"></span>
+
+    <!-- ---------- standby state ---------- -->
+    <div class="lr-idle" id="idleBlock">
+      <h2>LOTTERY DRAW<br>WILL START SOON</h2>
+      <p>16 MATCHES &nbsp;·&nbsp; 32 TEAMS</p>
+    </div>
+
+    <!-- ---------- the one live match, as a single enlarged card ---------- -->
+    <div class="lr-card hidden" id="matchCard">
+      <div class="lr-strip" id="matchStrip">Match-01</div>
+      <div class="lr-cardbody">
+
+        <!-- LEFT TEAM -->
+        <div class="lr-slot" id="slotLeft">
+          <img class="hidden" id="logoLeft" alt="">
+          <span class="ini" id="initialsLeft"></span>
+        </div>
+
+        <div class="lr-vs">VS</div>
+
+        <!-- RIGHT TEAM -->
+        <div class="lr-slot" id="slotRight">
+          <img class="hidden" id="logoRight" alt="">
+          <span class="ini" id="initialsRight"></span>
+        </div>
+
+        <!-- waiting placeholder, swapped in for the right slot -->
+        <div class="lr-slot waiting hidden" id="slotWaiting">
+          <span class="wait-text">WAITING<br>FOR<br>OPPONENT</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ---------- footer ---------- -->
+    <div class="lr-foot"><span id="footText">First Round &nbsp;·&nbsp; LIVE DRAW</span></div>
+  </div>
+</div>
+
+<!-- Presentation flow: on to the complete draw board -->
+<div class="flow-bar" id="flowBar">
+  <button class="flow-btn" id="btnFlowNext">FULL DRAW BOARD <span>&rarr;</span></button>
+</div>
+
+<!-- =============================================================
+     OPERATOR STRIP
+     Hidden by default so the screen stays clean for the audience.
+     Move the mouse (or press C) to reveal; it is never part of the
+     exported PNG because exports are drawn on a separate canvas.
+     ============================================================= -->
+<div class="op-strip" id="opStrip">
+  <span class="op-tag">OPERATOR</span>
+  <button class="op-btn" id="btnFull">FULLSCREEN <kbd>F</kbd></button>
+  <button class="op-btn" id="btnExport">EXPORT PNG <kbd>E</kbd></button>
+  <button class="op-btn" id="btnHide">HIDE <kbd>C</kbd></button>
+  <span class="op-state" id="opState">—</span>
+</div>
+
+<div class="toast-host" id="toastHost"></div>
+
+<script src="js/database.js"></script>
+<script src="js/storage.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/scene.js"></script>
+<script src="js/export.js"></script>
+<script src="js/live-result.js"></script>
+</body>
+</html>

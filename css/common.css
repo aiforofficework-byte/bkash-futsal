@@ -1,0 +1,372 @@
+/* =====================================================================
+   common.css  --  Shared design system for all three screens
+   ---------------------------------------------------------------------
+   Palette : deep black / dark burgundy / bright pink / white
+   Type    : condensed sports display + clean UI sans
+   Also holds the procedural "stadium" background used as the default
+   when the administrator has not uploaded a custom image.
+   ===================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700&family=Teko:wght@500;600;700&family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700;800&display=swap');
+
+:root {
+  /* ---- core palette ---- */
+  --black:        #05030a;
+  --black-2:      #0b0610;
+  --black-3:      #120a18;
+  --burgundy:     #4a0a24;
+  --burgundy-2:   #6d0f33;
+  --burgundy-3:   #2a0414;
+  --pink:         #ff1b6b;
+  --pink-2:       #ff5c94;
+  --pink-glow:    rgba(255, 27, 107, .55);
+
+  /* ---- bKash brand ---- */
+  --bk-pink:      #e2136e;   /* bKash primary */
+  --bk-pink-lt:   #f3368a;
+  --bk-pink-dk:   #b80f59;
+  --bk-tint:      #fdeaf3;   /* 8% pink wash */
+  --bk-tint-2:    #fbd7e8;
+
+  /* ---- draw-board reference palette (matches the artwork brief) ---- */
+  --ref-pink:     #e2136e;
+  --ref-pink-2:   #f3368a;
+  --ref-pink-dk:  #b80f59;
+  --pitch:        #18823d;
+
+  /* ---- light UI surfaces (Screen 01) ---- */
+  --l-bg:         #f4f1f7;
+  --l-surface:    #ffffff;
+  --l-surface-2:  #faf7fc;
+  --l-border:     #e7e1ee;
+  --l-border-2:   #f6c9de;
+  --l-text:       #1d1a24;
+  --l-text-2:     #4a4455;
+  --l-muted:      #857d93;
+  --l-shadow:     0 10px 30px rgba(45, 12, 32, .09);
+  --l-shadow-2:   0 2px 8px rgba(45, 12, 32, .06);
+  --white:        #ffffff;
+  --mist:         #e8e2ec;
+  --muted:        #9c8fa8;
+  --line:         rgba(255, 255, 255, .10);
+  --line-2:       rgba(255, 27, 107, .30);
+
+  /* ---- panel surfaces ---- */
+  --panel:        rgba(18, 10, 24, .82);
+  --panel-2:      rgba(28, 14, 34, .70);
+  --panel-solid:  #140b1c;
+
+  /* ---- type ---- */
+  --display: 'Teko', 'Barlow Condensed', 'Arial Narrow', Impact, sans-serif;
+  --cond:    'Barlow Condensed', 'Arial Narrow', Impact, sans-serif;
+  --ui:      'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --board:   'Poppins', 'Inter', 'Segoe UI', system-ui, sans-serif;
+
+  /* ---- misc ---- */
+  --radius:   14px;
+  --radius-s: 9px;
+  --shadow:   0 18px 48px rgba(0, 0, 0, .55);
+  --ease:     cubic-bezier(.22, .61, .36, 1);
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--black);
+  color: var(--white);
+  font-family: var(--ui);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+img { display: block; }
+button { font-family: inherit; cursor: pointer; }
+input, select, textarea { font-family: inherit; }
+
+/* =====================================================================
+   DEFAULT STADIUM BACKDROP
+   Pure CSS so the app looks finished before any upload happens.
+   Layer order: roof lights -> crowd haze -> pink floods -> deep base
+   ===================================================================== */
+.stadium-bg {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background:
+    radial-gradient(120% 80% at 50% -10%, #3d0a1f 0%, #1a0510 42%, var(--black) 100%),
+    linear-gradient(180deg, #16040d 0%, #05030a 100%);
+}
+
+/* soft ceiling light bloom */
+.stadium-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(42% 30% at 16% 0%,  rgba(255, 255, 255, .22), transparent 70%),
+    radial-gradient(42% 30% at 50% -4%, rgba(255, 180, 210, .20), transparent 70%),
+    radial-gradient(42% 30% at 84% 0%,  rgba(255, 255, 255, .22), transparent 70%),
+    radial-gradient(70% 50% at 50% 108%, var(--pink-glow), transparent 72%);
+  filter: blur(2px);
+}
+
+/* angled stadium light beams */
+.stadium-bg::after {
+  content: '';
+  position: absolute;
+  inset: -20% -10% 0 -10%;
+  background:
+    linear-gradient(104deg, transparent 18%, rgba(255, 255, 255, .085) 20%, transparent 23%),
+    linear-gradient(94deg,  transparent 38%, rgba(255, 27, 107, .13)  40%, transparent 44%),
+    linear-gradient(76deg,  transparent 58%, rgba(255, 255, 255, .075) 60%, transparent 63%),
+    linear-gradient(66deg,  transparent 76%, rgba(255, 27, 107, .11)  78%, transparent 82%);
+  pointer-events: none;
+}
+
+/* custom uploaded background image sits above the CSS fallback */
+.bg-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* readability scrim over whatever background is active */
+.bg-scrim {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(5, 3, 10, .78) 0%, rgba(5, 3, 10, .45) 38%, rgba(5, 3, 10, .88) 100%),
+    radial-gradient(70% 55% at 50% 50%, transparent 0%, rgba(5, 3, 10, .55) 100%);
+  pointer-events: none;
+}
+
+/* futsal pitch graphic (centre circle + halfway line + penalty arcs) */
+.pitch-graphic {
+  position: absolute;
+  left: 50%;
+  bottom: -6%;
+  width: 118%;
+  height: 58%;
+  transform: translateX(-50%) perspective(900px) rotateX(62deg);
+  transform-origin: 50% 100%;
+  border: 3px solid rgba(255, 255, 255, .13);
+  border-radius: 6px;
+  background:
+    linear-gradient(90deg, transparent 49.7%, rgba(255, 255, 255, .13) 49.7%, rgba(255, 255, 255, .13) 50.3%, transparent 50.3%),
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, .022) 0 7%, transparent 7% 14%);
+  pointer-events: none;
+}
+.pitch-graphic::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 26%;
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  border: 3px solid rgba(255, 255, 255, .13);
+  border-radius: 50%;
+}
+
+/* =====================================================================
+   SHARED TEXT / BADGE PRIMITIVES
+   ===================================================================== */
+.vs-badge {
+  font-family: var(--display);
+  font-weight: 700;
+  letter-spacing: .02em;
+  color: var(--white);
+  text-shadow: 0 0 22px var(--pink-glow);
+}
+
+.pink-rule {
+  height: 3px;
+  border: 0;
+  background: linear-gradient(90deg, transparent, var(--pink), transparent);
+}
+
+.db-slot .ini:empty,
+.lr-slot .ini:empty { display: none; }
+
+.logo-fit {
+  /* auto size within max bounds keeps the aspect ratio and centres the
+     logo even when the parent height is not a resolvable percentage */
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;      /* never distort a sponsor logo */
+  object-position: center;
+}
+
+/* small helper */
+.hidden { display: none !important; }
+.sr-only {
+  position: absolute; width: 1px; height: 1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap;
+}
+
+/* =====================================================================
+   TOAST (used on every screen for non-blocking feedback)
+   ===================================================================== */
+.toast-host {
+  position: fixed;
+  z-index: 9999;
+  right: 24px;
+  bottom: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  pointer-events: none;
+}
+.toast {
+  min-width: 240px;
+  max-width: 420px;
+  padding: 13px 18px;
+  border-radius: var(--radius-s);
+  background: var(--panel-solid);
+  border: 1px solid var(--line-2);
+  border-left: 4px solid var(--pink);
+  box-shadow: var(--shadow);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: .01em;
+  animation: toast-in .28s var(--ease);
+}
+.toast.err  { border-left-color: #ff4d4d; }
+.toast.ok   { border-left-color: #2fd47a; }
+
+/* light variant for the admin dashboard */
+body.admin .toast {
+  background: var(--l-surface);
+  color: var(--l-text);
+  border: 1px solid var(--l-border);
+  border-left: 4px solid var(--bk-pink);
+  box-shadow: 0 14px 34px rgba(45, 12, 32, .16);
+}
+body.admin .toast.err { border-left-color: #d92d20; }
+body.admin .toast.ok  { border-left-color: #12a150; }
+.toast.out  { animation: toast-out .25s var(--ease) forwards; }
+
+@keyframes toast-in  { from { opacity: 0; transform: translateX(26px) } to { opacity: 1; transform: none } }
+@keyframes toast-out { to   { opacity: 0; transform: translateX(26px) } }
+
+/* =====================================================================
+   TITLE BLOCK  (Screens 02 and 03)
+   Plain white round title over a date line, exactly as the tournament
+   artwork sets it. Absolute 1920x1080 coordinates.
+   ===================================================================== */
+.db-title {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  z-index: 6;
+  text-align: center;
+  pointer-events: none;
+}
+.db-title h1 {
+  margin: 0;
+  padding-top: 100px;
+  font-family: var(--board);
+  font-size: 72px;
+  line-height: 76px;
+  font-weight: 700;
+  color: #fff;
+  text-shadow: 0 3px 18px rgba(0, 0, 0, .55);
+  white-space: nowrap;
+  overflow: hidden;
+}
+.db-title p {
+  margin: 14px 0 0;
+  font-family: var(--board);
+  font-size: 36px;
+  line-height: 40px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, .96);
+  text-shadow: 0 2px 12px rgba(0, 0, 0, .55);
+  white-space: nowrap;
+  overflow: hidden;
+}
+.db-title p:empty { display: none; }
+
+/* =====================================================================
+   FLOW BAR  (Screens 02 and 03)
+   The one button that walks the operator through the presentation.
+   It is a fixed overlay, never part of the 1920x1080 stage, and never
+   appears in an exported PNG because exports are drawn on a canvas.
+   ===================================================================== */
+.flow-bar {
+  position: fixed;
+  z-index: 280;
+  right: 14px;
+  bottom: 14px;
+  display: flex;
+  gap: 6px;
+  transition: opacity .28s var(--ease), transform .28s var(--ease);
+}
+.flow-bar.hidden-ui {
+  opacity: 0;
+  transform: translateY(22px);
+  pointer-events: none;
+}
+
+.flow-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border: 0;
+  border-radius: 30px;
+  padding: 7px 13px;
+  font-family: var(--board);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .07em;
+  opacity: .82;
+  color: #fff;
+  background: linear-gradient(135deg, var(--ref-pink-2) 0%, var(--ref-pink) 55%, var(--ref-pink-dk) 100%);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, .45);
+  transition: transform .16s var(--ease), box-shadow .2s, filter .18s, opacity .18s;
+}
+.flow-btn:hover {
+  transform: translateY(-1px);
+  opacity: 1;
+  filter: brightness(1.08);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, .55), 0 0 22px rgba(226, 19, 110, .5);
+}
+.flow-btn:active { transform: translateY(0) scale(.98); }
+.flow-btn span { font-size: 12px; line-height: 1; }
+
+.flow-btn.ghost {
+  background: rgba(12, 5, 18, .88);
+  border: 1px solid rgba(226, 19, 110, .45);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, .5);
+}
+
+/* =====================================================================
+   PRESENTATION SCALER
+   Screens 02 and 03 are authored at an exact 1920x1080 and then scaled
+   to fit the viewport, so the 16:9 composition never distorts.
+   ===================================================================== */
+.stage-host {
+  position: fixed;
+  inset: 0;
+  background: #000;
+  overflow: hidden;
+}
+/* Absolute centring + translate(-50%,-50%) scale() is deterministic for a
+   child that is LARGER than its container, which grid centring is not. */
+.stage {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 1920px;
+  height: 1080px;
+  transform-origin: center center;
+  transform: translate(-50%, -50%) scale(1);
+  overflow: hidden;
+  background: var(--black);
+}
