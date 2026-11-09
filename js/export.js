@@ -336,8 +336,8 @@
      Geometry mirrors .db-grid / .db-card in css/draw-board.css
      ================================================================ */
   var BOARD_GEO = {
-    left: 64, top: 338, width: 1792, height: 734,
-    cols: 4, rows: 4, gapX: 26, gapY: 18,
+    left: 64, top: 324, width: 1792, height: 724,
+    cols: 4, rows: 4, gapX: 26, gapY: 16,
     pad: 5, stripH: 42, radius: 24, innerR: 19,
     bodyPadX: 14, vsPx: 34, slotW: 138, slotH: 98
   };

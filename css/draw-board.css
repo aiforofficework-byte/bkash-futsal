@@ -111,15 +111,15 @@ body.presentation.show-cursor { cursor: default; }
 .db-grid {
   position: absolute;
   left: 64px;
-  top: 338px;
+  top: 324px;
   width: 1792px;
-  height: 734px;
+  height: 724px;
   z-index: 5;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-template-rows: repeat(4, 1fr);
   column-gap: 26px;
-  row-gap: 18px;
+  row-gap: 16px;
 }
 
 /* ------------------------------ card ------------------------------ */
