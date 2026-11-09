@@ -9,6 +9,7 @@ window.LOGO_MANIFEST = [
   { file: "LOGO/Adplay.png", name: "Adplay" },
   { file: "LOGO/Amari Dhaka.png", name: "Amari Dhaka" },
   { file: "LOGO/Apex.png", name: "Apex" },
+  { file: "LOGO/Berger.png", name: "Berger" },
   { file: "LOGO/Bio-Xin.png", name: "Bio-Xin" },
   { file: "LOGO/Butterfly Group.png", name: "Butterfly Group" },
   { file: "LOGO/Cartup.png", name: "Cartup" },
