@@ -179,6 +179,7 @@
     el.btnImportFolder.textContent = 'IMPORTING 0/' + queue.length;
 
     var added = 0, failed = 0;
+    var missing = [];      // files the server would not give us
 
     /* Sequential so IndexedDB writes and state commits stay ordered. */
     var chain = Promise.resolve();
@@ -202,6 +203,7 @@
           .catch(function (err) {
             console.warn('[import] failed:', item.file, err);
             failed++;
+            if (missing.length < 6) missing.push(item.file.replace('LOGO/', ''));
           })
           .then(function () {
             el.btnImportFolder.textContent = 'IMPORTING ' + (i + 1) + '/' + queue.length;
@@ -217,8 +219,18 @@
           Store.teams().length + '/' + MAX + '.', 'ok', 5000);
       }
       if (failed) {
-        UI.toast(failed + ' logo(s) could not be loaded. Are you running a local ' +
-          'server (Live Server)? file:// blocks folder reads.', 'err', 9000);
+        /* All of them failing points at the page being opened as a file.
+           A handful failing points at the names instead: hosting is case
+           sensitive, so Daraz.png and daraz.png are different files. */
+        if (added === 0) {
+          UI.toast('No logo could be loaded. Open the folder through a local ' +
+            'server (VS Code Live Server) - file:// blocks folder reads.', 'err', 9000);
+        } else {
+          UI.toast(failed + ' logo(s) missing: ' + missing.join(', ') +
+            (failed > missing.length ? ' and more' : '') +
+            '. The names in js/logo-manifest.js must match /LOGO exactly - ' +
+            'upper and lower case count once the site is hosted.', 'err', 12000);
+        }
       }
       if (added && Store.teams().length < MAX) {
         UI.toast('Add ' + (MAX - Store.teams().length) + ' more team(s) to reach ' +
