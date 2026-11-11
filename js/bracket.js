@@ -130,7 +130,8 @@
     if (bgUrl) {
       el.bgImage.src = bgUrl;
       el.bgImage.classList.remove('hidden');
-      el.bgDim.classList.remove('hidden');
+      /* shown exactly as uploaded -- no tint, no darkening */
+      el.bgDim.classList.add('hidden');
       el.sceneCanvas.classList.add('hidden');
     } else {
       el.bgImage.classList.add('hidden');

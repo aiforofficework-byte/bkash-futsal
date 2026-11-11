@@ -70,10 +70,10 @@ body.presentation.show-cursor { cursor: default; }
    ===================================================================== */
 .db-tlogo {
   position: absolute;
-  top: 26px;
-  right: 98px;
-  width: 282px;
-  height: 306px;
+  top: 58px;
+  right: 114px;
+  width: 264px;
+  height: 300px;
   object-fit: contain;
   object-position: center;
   z-index: 7;
@@ -111,15 +111,15 @@ body.presentation.show-cursor { cursor: default; }
 .db-grid {
   position: absolute;
   left: 64px;
-  top: 324px;
+  top: 376px;
   width: 1792px;
-  height: 724px;
+  height: 688px;
   z-index: 5;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-template-rows: repeat(4, 1fr);
   column-gap: 26px;
-  row-gap: 16px;
+  row-gap: 12px;
 }
 
 /* ------------------------------ card ------------------------------ */
@@ -147,14 +147,14 @@ body.presentation.show-cursor { cursor: default; }
 /* ------------------------------ pink header strip ------------------------------ */
 .db-strip {
   flex: none;
-  height: 42px;
+  height: 40px;
   display: grid;
   place-items: center;
   border-radius: 19px 19px 0 0;
   background: linear-gradient(180deg, #f33a8c 0%, #ee1d7a 55%, #e0156f 100%);
   font-family: var(--board);
-  font-size: 25px;
-  line-height: 29px;
+  font-size: 24px;
+  line-height: 28px;
   font-weight: 700;
   letter-spacing: .005em;
   color: #fff;
@@ -178,7 +178,7 @@ body.presentation.show-cursor { cursor: default; }
 .db-slot {
   position: relative;
   width: 138px;
-  height: 98px;
+  height: 92px;
   /* FLEX, not grid: the slot also holds an (often empty) initials span,
      and a grid would give that span its own row and split the spare
      height between the two -- which pushed every logo half a row above
@@ -196,7 +196,7 @@ body.presentation.show-cursor { cursor: default; }
      Capping both axes in px lets the logo scale down on its own and sit
      dead-centre in the slot. */
   max-width: 138px;
-  max-height: 98px;
+  max-height: 92px;
   width: auto;
   height: auto;
   object-fit: contain;           /* never distort a sponsor logo */

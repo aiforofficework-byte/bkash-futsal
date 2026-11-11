@@ -298,7 +298,7 @@
      over the same spot so it replaces it cleanly. */
   function drawTournamentMark(ctx, img, name) {
     if (img) {
-      drawContain(ctx, img, 1540, 26, 282, 306);
+      drawContain(ctx, img, 1542, 58, 264, 300);
       return;
     }
     if (Scene.hasPlate() && Scene.plateExportSafe()) return;   // shield is in the plate
@@ -336,10 +336,10 @@
      Geometry mirrors .db-grid / .db-card in css/draw-board.css
      ================================================================ */
   var BOARD_GEO = {
-    left: 64, top: 324, width: 1792, height: 724,
-    cols: 4, rows: 4, gapX: 26, gapY: 16,
-    pad: 5, stripH: 42, radius: 24, innerR: 19,
-    bodyPadX: 14, vsPx: 34, slotW: 138, slotH: 98
+    left: 64, top: 376, width: 1792, height: 688,
+    cols: 4, rows: 4, gapX: 26, gapY: 12,
+    pad: 5, stripH: 40, radius: 24, innerR: 19,
+    bodyPadX: 14, vsPx: 34, slotW: 138, slotH: 92
   };
 
   function cardSize() {
@@ -375,13 +375,8 @@
         /* ---------- background ---------- */
         var custom = imgs[b.boardBgKey];
         if (custom) {
+          /* an uploaded background goes in untouched */
           drawCover(ctx, custom, 0, 0, W, H);
-          var dim = ctx.createLinearGradient(0, 0, 0, H);
-          dim.addColorStop(0, 'rgba(5,1,8,.45)');
-          dim.addColorStop(0.45, 'rgba(5,1,8,.25)');
-          dim.addColorStop(1, 'rgba(5,1,8,.55)');
-          ctx.fillStyle = dim;
-          ctx.fillRect(0, 0, W, H);
         } else {
           Scene.paintScene(ctx, "board", true);
         }
@@ -433,7 +428,7 @@
     ctx.fillStyle = C.white;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.font = '700 25px ' + BOARD;
+    ctx.font = '700 24px ' + BOARD;
     ctx.shadowColor = 'rgba(0,0,0,.22)';
     ctx.shadowBlur = 3;
     ctx.shadowOffsetY = 1;
@@ -518,13 +513,8 @@
         /* ---------- background ---------- */
         var custom = imgs[b.liveBgKey];
         if (custom) {
+          /* an uploaded background goes in untouched */
           drawCover(ctx, custom, 0, 0, W, H);
-          var dim = ctx.createLinearGradient(0, 0, 0, H);
-          dim.addColorStop(0, 'rgba(5,1,8,.70)');
-          dim.addColorStop(0.40, 'rgba(5,1,8,.40)');
-          dim.addColorStop(1, 'rgba(5,1,8,.78)');
-          ctx.fillStyle = dim;
-          ctx.fillRect(0, 0, W, H);
         } else {
           Scene.paintScene(ctx, "live", true);
         }
@@ -795,18 +785,13 @@
         /* ---------- background ---------- */
         var custom = imgs[b.boardBgKey];
         if (custom) {
+          /* an uploaded background goes in untouched */
           drawCover(ctx, custom, 0, 0, W, H);
-          var dim = ctx.createLinearGradient(0, 0, 0, H);
-          dim.addColorStop(0, 'rgba(5,1,8,.45)');
-          dim.addColorStop(0.45, 'rgba(5,1,8,.25)');
-          dim.addColorStop(1, 'rgba(5,1,8,.55)');
-          ctx.fillStyle = dim;
-          ctx.fillRect(0, 0, W, H);
         } else {
           Scene.paintScene(ctx, 'board', true);
         }
 
-        if (imgs[b.logoKey]) drawContain(ctx, imgs[b.logoKey], 1540, 26, 282, 306);
+        if (imgs[b.logoKey]) drawContain(ctx, imgs[b.logoKey], 1542, 58, 264, 300);
 
         /* ---------- round headings ---------- */
         BR.heads.forEach(function (hd) {

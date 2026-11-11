@@ -24,8 +24,8 @@ body.presentation.show-cursor { cursor: default; }
 
 .br-tlogo {
   position: absolute;
-  top: 26px; right: 98px;
-  width: 282px; height: 306px;
+  top: 58px; right: 114px;
+  width: 264px; height: 300px;
   object-fit: contain; object-position: center;
   z-index: 7;
   filter: drop-shadow(0 8px 26px rgba(0, 0, 0, .6));
