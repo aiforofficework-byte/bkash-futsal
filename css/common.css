@@ -271,7 +271,7 @@ body.admin .toast.ok  { border-left-color: #12a150; }
 }
 .db-title h1 {
   margin: 0;
-  padding-top: 100px;
+  padding-top: 150px;
   font-family: var(--board);
   font-size: 72px;
   line-height: 76px;
