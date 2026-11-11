@@ -244,7 +244,7 @@
         else { pinned = true; showBars(); }
       }
       else if (k === 'n') UI.go('index.html#lottery');
-      else if (k === 'v' && Store.isDrawComplete()) UI.go('bracket.html');
+      else if (k === 'w' || k === 'v') UI.go('bracket.html');
     });
 
     global.addEventListener('dblclick', function () {

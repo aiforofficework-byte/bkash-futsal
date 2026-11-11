@@ -214,7 +214,7 @@
       var k = e.key.toLowerCase();
       if (k === 'f') UI.toggleFullscreen(document.documentElement);
       else if (k === 'e') Exporter.exportBracket();
-      else if (k === 'b') UI.go('draw-board.html');
+      else if (k === 'w' || k === 'b') UI.go('draw-board.html');
       else if (k === 'n') UI.go('index.html#lottery');
       else if (k === 'c') {
         if (pinned) { pinned = false; hideBars(); }

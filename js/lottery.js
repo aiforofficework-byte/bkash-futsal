@@ -24,7 +24,7 @@
       'nextBanner', 'nextMatchLabel', 'nextSideLabel', 'nextNote',
       'ringValue', 'lotteryProgressPct',
       'lotteryLock', 'lotteryLockText',
-      'btnUndo', 'btnReset', 'btnSave', 'saveStamp', 'chkAutoFlow',
+      'btnUndo', 'btnReset', 'btnSave', 'saveStamp',
       'selectionGrid', 'matchOverview'
     ].forEach(function (id) { el[id] = document.getElementById(id); });
   }
@@ -43,14 +43,9 @@
       UI.toast('DRAW COMPLETE - all 16 matches are set.', 'ok', 6000);
     }
 
-    /* Presentation flow: once BOTH teams of the match are placed, this
-       tab moves on to the Live Result screen. Screens already open in
-       their own tabs are not affected -- they just live-update. */
-    var m = Store.currentMatch();
-    if (m && m.complete && UI.flowEnabled()) {
-      UI.toast(m.label + ' set — opening the Live Result…', 'ok', 1400);
-      UI.go('live-result.html', 1100);
-    }
+    /* The control panel never navigates away. The presentation screens
+       live in their own tabs and update themselves, so the operator can
+       keep both hands on this one. */
   }
 
   /* =================================================== CONTROLS */
@@ -239,14 +234,6 @@
       var card = e.target.closest('[data-team]');
       if (!card || card.disabled) return;
       pick(card.getAttribute('data-team'));
-    });
-
-    el.chkAutoFlow.checked = UI.flowEnabled();
-    el.chkAutoFlow.addEventListener('change', function () {
-      UI.setFlowEnabled(el.chkAutoFlow.checked);
-      UI.toast(el.chkAutoFlow.checked
-        ? 'Auto-advance on: this tab jumps to the Live Result after each match.'
-        : 'Auto-advance off: this tab stays on the control panel.', 'ok', 4000);
     });
 
     el.btnUndo.addEventListener('click', undo);

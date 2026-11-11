@@ -257,7 +257,8 @@
         if (pinned) { pinned = false; hideBars(); }
         else { pinned = true; showBars(); }
       }
-      else if (k === 'b') UI.go('draw-board.html');
+      else if (k === 'b' || k === 'w') UI.go('draw-board.html');
+      else if (k === 'd') el.btnDownloadNext.click();
     });
 
     /* double-click anywhere toggles fullscreen -- handy on a projector */

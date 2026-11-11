@@ -162,27 +162,11 @@
     }, 400);
   }
 
-  /* ------------------------------------------------ presentation flow
-     The operator can run the whole draw from one window:
-         control panel  --(match complete)-->  live result
-         live result    --(button)---------->  full draw board
-         full draw board--(NEW MATCH DRAW)-->  control panel
-     Screens opened in their own tabs are untouched by this -- they just
-     keep live-updating -- because only the tab where the click happened
-     ever navigates. The operator can switch it off at any time. */
-  var FLOW_KEY = 'futsal_flow_auto_v1';
-
-  function flowEnabled() {
-    try {
-      var v = global.localStorage.getItem(FLOW_KEY);
-      return v === null ? true : v === '1';     // on by default
-    } catch (e) { return true; }
-  }
-
-  function setFlowEnabled(on) {
-    try { global.localStorage.setItem(FLOW_KEY, on ? '1' : '0'); } catch (e) {}
-  }
-
+  /* ------------------------------------------------ screen navigation
+     The control panel never navigates on its own; the presentation
+     screens sit in their own tabs and the operator moves between them
+     with the keyboard (W, B, N), which is what works on a big screen
+     across the room where the mouse pointer cannot be seen. */
   function go(page, delay) {
     /* Flag the jump so the control panel does not fire its unsaved-work
        warning -- the draw is already persisted on every single click. */
@@ -193,8 +177,6 @@
 
   global.UI = {
     toast: toast,
-    flowEnabled: flowEnabled,
-    setFlowEnabled: setFlowEnabled,
     go: go,
     confirm: confirmDialog,
     validateImageFile: validateImageFile,

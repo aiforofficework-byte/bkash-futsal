@@ -87,53 +87,22 @@ A team with no logo still works — the card shows its initials instead.
 3. Press **OPEN LIVE RESULT** and **OPEN DRAW BOARD** — each opens in a new tab.
    Drag them to your second and third monitor and press **F** for fullscreen.
 
-### The presentation flow (one window)
+### Working across tabs
 
-By default the operator can run the whole event from a single window:
+The control panel **never navigates away**. Open the presentation screens in
+their own tabs (or on their own monitors) and drive everything from the
+keyboard -- on a big screen across the room the mouse pointer is invisible,
+so every move between screens has a key:
 
 ```
-  index.html          pick the 2 teams of a match
-       |
-       |  both teams placed  ->  this tab moves on automatically
-       v
-  live-result.html    the match, big, as one enlarged card
-       |                 |
-       |                 +-- DOWNLOAD & NEXT MATCH  saves the PNG and
-       |                     blanks the card for the next draw
-       |  click  FULL DRAW BOARD  ->
-       v
-  draw-board.html     all 16 matches so far
-       |                 |
-       |                 +-- once 16/16 are set:  FULL BRACKET ->
-       |                                            bracket.html
-       |  click  + NEW MATCH DRAW  ->
-       v
-  index.html          ready for the next match
+  TAB 1  index.html         you stay here the whole draw
+  TAB 2  live-result.html   D = save this match and blank the card
+  TAB 3  draw-board.html    W = full bracket
+  TAB 3  bracket.html       W = back to the draw board
 ```
 
-### DOWNLOAD & NEXT MATCH (Screen 02)
-
-As soon as both teams of a match are on screen, a pink button appears at
-the bottom. One click saves that match as a 1920x1080 PNG **and** clears the
-card to an empty one carrying the next match number, so the screen is ready
-for the following draw without dropping back to the standby headline. The
-moment the operator picks the next first team, it fills in as usual.
-
-### The full bracket (Screen 04)
-
-Once all 16 first-round matches are drawn, a **FULL BRACKET** button appears
-on the draw board (shortcut `V`). It opens `bracket.html`: the 32 drawn logos
-down the left under *First Round*, then Second Round, Quarter Final, Semi
-Final and the Final. Those later rounds stay as `M:01 WINNER` style
-placeholders -- a draw board does not know who wins. It exports to
-1920x1080 PNG with `E` like the other screens.
-
-The **AUTO-ADVANCE TO LIVE RESULT** checkbox on the lottery tab turns the
-automatic jump off if you would rather stay on the control panel.
-
-Only the tab you clicked in ever navigates. Screens you opened in their own
-tabs (second and third monitor) are never moved -- they just keep live-updating.
-So both ways of working are available at the same time.
+`W` is a straight toggle: press it on the draw board to show the bracket,
+press it again to come back. It works at any point, not just at 16/16.
 
 On Screens 02 and 03 the flow button sits bottom-right. It fades out after a
 few seconds so the audience sees a clean screen, and comes back as soon as you
@@ -171,6 +140,8 @@ click 1 → M01 left, click 2 → M01 right, click 3 → M02 left, … click 32 
 | `F` or double-click | Fullscreen on / off |
 | `E` | Export this screen as a 1920×1080 PNG |
 | `C` | Pin the operator strip and flow button on / off |
+| `W` | Toggle between the draw board and the full bracket |
+| `D` | (Screen 02) save this match as a PNG and blank the card |
 | `B` | (Screen 02) go to the full draw board |
 | `N` | (Screen 03) start a new match draw |
 
