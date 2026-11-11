@@ -15,9 +15,9 @@
 body.presentation {
   overflow: hidden;
   background: #000;
-  cursor: none;
+  /* the pointer stays visible -- the operator needs to see it */
+  cursor: default;
 }
-body.presentation.show-cursor { cursor: default; }
 
 /* background canvas painted by js/scene.js */
 .scene-canvas {
@@ -215,7 +215,7 @@ body.presentation.show-cursor { cursor: default; }
   line-height: 36px;
   font-weight: 800;
   letter-spacing: -.01em;
-  color: var(--ref-pink);
+  color: var(--vs-ink);
   padding: 0 4px;
   user-select: none;
 }

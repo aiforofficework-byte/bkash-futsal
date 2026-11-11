@@ -26,6 +26,7 @@
   /* palette (kept in sync with common.css) */
   var C = {
     white: '#ffffff',
+    vsInk: '#000000',        // the VS on every match card
     refPink: '#ee1d7a',
     refPink2: '#f33a8c',
     refPinkDk: '#d2126a',
@@ -444,7 +445,7 @@
     ctx.save();
     ctx.font = '800 ' + g.vsPx + 'px ' + BOARD;
     var vsW = ctx.measureText('VS').width;
-    ctx.fillStyle = C.refPink;
+    ctx.fillStyle = C.vsInk;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillText('VS', x + w / 2, cy + 1);
@@ -588,7 +589,7 @@
         ctx.save();
         ctx.font = '800 ' + g.vsPx + 'px ' + BOARD;
         var vsW = ctx.measureText('VS').width;
-        ctx.fillStyle = C.refPink;
+        ctx.fillStyle = C.vsInk;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         ctx.fillText('VS', g.x + g.w / 2, cy + 2);
@@ -677,12 +678,12 @@
     r1:    { x: 26,   y: 148, w: 616, h: 900, cols: 2, rows: 8, gx: 12, gy: 10 },
     r2:    { x: 672,  y: 300, w: 438, h: 596, cols: 2, rows: 4, gx: 12, gy: 14, rowMajor: true },
     qf:    { x: 1140, y: 300, w: 268, h: 596, cols: 1, rows: 4, gx: 0,  gy: 14 },
-    sf:    { x: 1452, y: 424, w: 268, h: 296, cols: 1, rows: 2, gx: 0,  gy: 14 },
-    final: { x: 1748, y: 436, w: 152, h: 272 },
+    sf:    { x: 1452, y: 437, w: 268, h: 283, cols: 1, rows: 2, gx: 0,  gy: 14 },
+    final: { x: 1748, y: 446, w: 152, h: 265 },
     heads: [
-      { x: 26,   y: 26,  title: null },   /* round title comes from branding */
-      { x: 672,  y: 188, title: 'Second Round' },
-      { x: 1140, y: 214, title: 'Quarter Final' },
+      { x: 26,   y: 59,  title: null },   /* round title comes from branding */
+      { x: 672,  y: 211, title: 'Second Round' },
+      { x: 1140, y: 211, title: 'Quarter Final' },
       { x: 1452, y: 348, title: 'Semi Final' }
     ],
     pad: 3, radius: 13, innerR: 10, stripH: 25, stripPx: 15
@@ -752,7 +753,7 @@
 
   function brVs(ctx, cx, cy, px) {
     ctx.save();
-    ctx.fillStyle = C.refPink;
+    ctx.fillStyle = C.vsInk;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.font = '800 ' + px + 'px ' + BOARD;

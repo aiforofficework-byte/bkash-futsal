@@ -184,13 +184,11 @@
   function showBars() {
     el.opStrip.classList.add('show');
     el.flowBar.classList.remove('hidden-ui');
-    document.body.classList.add('show-cursor');
   }
   function hideBars() {
     if (pinned) return;
     el.opStrip.classList.remove('show');
     el.flowBar.classList.add('hidden-ui');
-    document.body.classList.remove('show-cursor');
   }
 
   function initChrome() {

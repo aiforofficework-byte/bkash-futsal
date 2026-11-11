@@ -13,8 +13,7 @@
      Final         1 card
    ===================================================================== */
 
-body.presentation { overflow: hidden; background: #000; cursor: none; }
-body.presentation.show-cursor { cursor: default; }
+body.presentation { overflow: hidden; background: #000; cursor: default; }
 
 .scene-canvas { position: absolute; inset: 0; width: 1920px; height: 1080px; }
 .bg-dim {
@@ -57,9 +56,9 @@ body.presentation.show-cursor { cursor: default; }
 }
 .br-head p:empty { display: none; }
 
-#headR1 { left: 26px;   top: 26px;  }
-#headR2 { left: 672px;  top: 188px; }
-#headQF { left: 1140px; top: 214px; }
+#headR1 { left: 26px;   top: 59px;  }
+#headR2 { left: 672px;  top: 211px; }
+#headQF { left: 1140px; top: 211px; }
 #headSF { left: 1452px; top: 348px; }
 
 /* =====================================================================
@@ -89,8 +88,8 @@ body.presentation.show-cursor { cursor: default; }
   row-gap: 14px;
 }
 .br-grid.sf {
-  left: 1452px; top: 424px;
-  width: 268px; height: 296px;
+  left: 1452px; top: 437px;
+  width: 268px; height: 283px;
   grid-template-rows: repeat(2, 1fr);
   row-gap: 14px;
 }
@@ -132,7 +131,7 @@ body.presentation.show-cursor { cursor: default; }
 .br-vs {
   font-family: var(--board);
   font-weight: 800;
-  color: var(--ref-pink);
+  color: var(--vs-ink);
   line-height: 1;
 }
 
@@ -175,8 +174,8 @@ body.presentation.show-cursor { cursor: default; }
    ===================================================================== */
 .br-final {
   position: absolute;
-  left: 1748px; top: 436px;
-  width: 152px; height: 272px;
+  left: 1748px; top: 446px;
+  width: 152px; height: 265px;
   z-index: 6;
 }
 .br-final .br-card { height: 100%; }

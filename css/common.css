@@ -30,6 +30,7 @@
 
   /* ---- draw-board reference palette (matches the artwork brief) ---- */
   --ref-pink:     #e2136e;
+  --vs-ink:       #000000;   /* the VS on every match card */
   --ref-pink-2:   #f3368a;
   --ref-pink-dk:  #b80f59;
   --pitch:        #18823d;
