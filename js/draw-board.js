@@ -23,7 +23,7 @@
   function cache() {
     [
       'stage', 'sceneCanvas', 'bgImage', 'bgDim', 'tLogo', 'tName',
-      'roundTitle', 'matchDate', 'boardGrid',
+      'roundTitle', 'boardGrid',
       'opStrip', 'opState', 'btnFull', 'btnExport', 'btnHide',
       'flowBar', 'btnFlowNew', 'btnFlowLive', 'btnFlowBracket'
     ].forEach(function (id) { el[id] = document.getElementById(id); });
@@ -92,7 +92,6 @@
 
     el.tName.textContent = b.tournamentName;
     el.roundTitle.textContent = b.roundTitle;
-    el.matchDate.textContent = b.matchDate || '';
 
     /* background: custom upload wins, otherwise the procedural scene */
     var bgUrl = b.boardBgKey ? ImageDB.url(b.boardBgKey) : null;

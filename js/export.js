@@ -237,13 +237,6 @@
     ctx.shadowBlur = 18;
     fitFont(ctx, b.roundTitle, 1180, "700", 72, BOARD, 0, 30);
     ctx.fillText(b.roundTitle, W / 2, 160);
-
-    if (b.matchDate) {
-      ctx.fillStyle = "rgba(255,255,255,.96)";
-      ctx.shadowBlur = 12;
-      fitFont(ctx, b.matchDate, 1100, "600", 36, BOARD, 0, 18);
-      ctx.fillText(b.matchDate, W / 2, 226);
-    }
     ctx.restore();
   }
 
@@ -681,10 +674,10 @@
     sf:    { x: 1452, y: 437, w: 268, h: 283, cols: 1, rows: 2, gx: 0,  gy: 14 },
     final: { x: 1748, y: 446, w: 152, h: 265 },
     heads: [
-      { x: 26,   y: 59,  title: null },   /* round title comes from branding */
-      { x: 672,  y: 211, title: 'Second Round' },
-      { x: 1140, y: 211, title: 'Quarter Final' },
-      { x: 1452, y: 348, title: 'Semi Final' }
+      { x: 26,   y: 86,  title: null },   /* round title comes from branding */
+      { x: 672,  y: 238, title: 'Second Round' },
+      { x: 1140, y: 238, title: 'Quarter Final' },
+      { x: 1452, y: 375, title: 'Semi Final' }
     ],
     pad: 3, radius: 13, innerR: 10, stripH: 25, stripPx: 15
   };
@@ -804,12 +797,6 @@
           ctx.shadowBlur = 14;
           ctx.font = '700 40px ' + BOARD;
           ctx.fillText(title, hd.x, hd.y + 36);
-          if (b.matchDate) {
-            ctx.font = '600 19px ' + BOARD;
-            ctx.fillStyle = 'rgba(255,255,255,.95)';
-            ctx.shadowBlur = 10;
-            ctx.fillText(b.matchDate, hd.x, hd.y + 62);
-          }
           ctx.restore();
         });
 
@@ -855,19 +842,10 @@
         var f = BR.final;
         var fb = brCard(ctx, f.x, f.y, f.w, f.h, 'FINAL', 34, 21);
         var fcx = fb.x + fb.w / 2;
-        var top = fb.y + 20;
-        if (b.matchDate) {
-          ctx.save();
-          ctx.fillStyle = '#4a4455';
-          ctx.textAlign = 'center';
-          ctx.textBaseline = 'middle';
-          ctx.font = '700 12px ' + BOARD;
-          ctx.fillText(b.matchDate, fcx, top);
-          ctx.restore();
-        }
-        brPlaceholder(ctx, 'SF:01|WINNER', fcx, top + 52);
-        brVs(ctx, fcx, top + 110, 30);
-        brPlaceholder(ctx, 'SF:02|WINNER', fcx, top + 168);
+        var fcy = fb.y + fb.h / 2;
+        brPlaceholder(ctx, 'SF:01|WINNER', fcx, fcy - 72);
+        brVs(ctx, fcx, fcy, 30);
+        brPlaceholder(ctx, 'SF:02|WINNER', fcx, fcy + 72);
 
         return canvas;
       });

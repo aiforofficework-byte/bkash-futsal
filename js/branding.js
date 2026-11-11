@@ -33,7 +33,7 @@
 
   function cache() {
     [
-      'brandTournamentName', 'brandSubtitle', 'brandRoundTitle', 'brandMatchDate', 'btnSaveBranding',
+      'brandTournamentName', 'brandSubtitle', 'brandRoundTitle', 'btnSaveBranding',
       'brandTitle', 'brandMarkImg', 'brandMarkFallback'
     ].forEach(function (id) { el[id] = document.getElementById(id); });
   }
@@ -80,8 +80,7 @@
     Store.setBranding({
       tournamentName: el.brandTournamentName.value.trim() || 'FUTSAL CARNIVAL',
       subtitle: el.brandSubtitle.value.trim() || 'DHAKA 2026',
-      roundTitle: el.brandRoundTitle.value.trim() || 'First Round',
-      matchDate: el.brandMatchDate.value.trim()
+      roundTitle: el.brandRoundTitle.value.trim() || 'First Round'
     });
     UI.toast('Tournament identity saved.', 'ok');
   }
@@ -94,7 +93,6 @@
       el.brandTournamentName.value = b.tournamentName;
       el.brandSubtitle.value = b.subtitle;
       el.brandRoundTitle.value = b.roundTitle;
-      el.brandMatchDate.value = b.matchDate;
     }
 
     /* top-bar title + mark */
@@ -154,7 +152,7 @@
 
     /* Live-preview the title in the top bar while typing, and stop the
        re-render from fighting the operator's keystrokes. */
-    [el.brandTournamentName, el.brandSubtitle, el.brandRoundTitle, el.brandMatchDate].forEach(function (f) {
+    [el.brandTournamentName, el.brandSubtitle, el.brandRoundTitle].forEach(function (f) {
       f.addEventListener('focus', function () { typing = true; });
       f.addEventListener('blur',  function () { typing = false; render(); });
       f.addEventListener('keydown', function (e) { if (e.key === 'Enter') saveIdentity(); });

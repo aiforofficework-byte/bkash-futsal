@@ -25,7 +25,7 @@
   function cache() {
     [
       'stage', 'sceneCanvas', 'bgImage', 'bgDim',
-      'tLogo', 'tName', 'roundTitle', 'matchDate', 'footText',
+      'tLogo', 'tName', 'roundTitle', 'footText',
       'idleBlock', 'matchCard', 'matchStrip',
       'slotLeft', 'logoLeft', 'initialsLeft',
       'slotRight', 'logoRight', 'initialsRight', 'slotWaiting',
@@ -48,7 +48,6 @@
 
     el.tName.textContent = b.tournamentName;
     el.roundTitle.textContent = b.roundTitle;
-    el.matchDate.textContent = b.matchDate || '';
     el.footText.textContent = b.roundTitle + '  ·  LIVE DRAW';
 
     /* background: custom upload wins, otherwise the procedural scene */

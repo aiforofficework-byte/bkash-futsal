@@ -56,10 +56,10 @@ body.presentation { overflow: hidden; background: #000; cursor: default; }
 }
 .br-head p:empty { display: none; }
 
-#headR1 { left: 26px;   top: 59px;  }
-#headR2 { left: 672px;  top: 211px; }
-#headQF { left: 1140px; top: 211px; }
-#headSF { left: 1452px; top: 348px; }
+#headR1 { left: 26px;   top: 86px;  }
+#headR2 { left: 672px;  top: 238px; }
+#headQF { left: 1140px; top: 238px; }
+#headSF { left: 1452px; top: 375px; }
 
 /* =====================================================================
    GRIDS
@@ -186,14 +186,6 @@ body.presentation { overflow: hidden; background: #000; cursor: default; }
   gap: 10px;
   padding: 12px 6px;
   align-content: center;
-}
-.br-final .br-date {
-  font-family: var(--board);
-  font-size: 12px;
-  font-weight: 700;
-  color: #4a4455;
-  text-align: center;
-  white-space: nowrap;
 }
 .br-final .br-vs { font-size: 30px; }
 

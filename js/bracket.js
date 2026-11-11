@@ -17,7 +17,7 @@
   function cache() {
     [
       'stage', 'sceneCanvas', 'bgImage', 'bgDim', 'tLogo', 'tName',
-      'titleR1', 'dateR1', 'dateR2', 'dateQF', 'dateSF',
+      'titleR1',
       'gridR1', 'gridR2', 'gridQF', 'gridSF', 'gridFinal',
       'flowBar', 'btnFlowBoard', 'btnFlowNew',
       'opStrip', 'opState', 'btnFull', 'btnExport', 'btnHide'
@@ -78,7 +78,6 @@
       '<div class="br-card">' +
         '<div class="br-strip">FINAL</div>' +
         '<div class="br-body">' +
-          '<div class="br-date" id="dateFinal"></div>' +
           ph('SF:01<br>WINNER') +
           '<div class="br-vs">VS</div>' +
           ph('SF:02<br>WINNER') +
@@ -117,11 +116,6 @@
 
     var b = Store.getState().branding;
     el.titleR1.textContent = b.roundTitle;
-    [el.dateR1, el.dateR2, el.dateQF, el.dateSF].forEach(function (n) {
-      n.textContent = b.matchDate || '';
-    });
-    var df = document.getElementById('dateFinal');
-    if (df) df.textContent = b.matchDate || '';
 
     el.tName.textContent = b.tournamentName;
 
