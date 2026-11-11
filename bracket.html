@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Full Tournament Bracket — Futsal Carnival</title>
+<link rel="stylesheet" href="css/common.css">
+<link rel="stylesheet" href="css/bracket.css">
+</head>
+<body class="presentation">
+
+<div class="stage-host">
+  <!-- authored at exactly 1920 x 1080, then uniformly scaled -->
+  <div class="stage" id="stage">
+
+    <!-- ---------- background: the same artwork plate ---------- -->
+    <canvas class="scene-canvas" id="sceneCanvas" width="1920" height="1080"></canvas>
+    <img class="bg-image hidden" id="bgImage" alt="">
+    <div class="bg-dim hidden" id="bgDim"></div>
+
+    <!-- tournament logo: only when the operator uploaded one -->
+    <img class="br-tlogo hidden" id="tLogo" alt="">
+    <span class="hidden" id="tName"></span>
+
+    <!-- ---------- ROUND 1 : the 16 drawn matches ---------- -->
+    <div class="br-head" id="headR1">
+      <h2 id="titleR1">First Round</h2>
+      <p id="dateR1">Date: 21 Nov 2026</p>
+    </div>
+    <div class="br-grid r1" id="gridR1"></div>
+
+    <!-- ---------- ROUND 2 ---------- -->
+    <div class="br-head" id="headR2">
+      <h2>Second Round</h2>
+      <p id="dateR2">Date: 21 Nov 2026</p>
+    </div>
+    <div class="br-grid r2" id="gridR2"></div>
+
+    <!-- ---------- QUARTER FINAL ---------- -->
+    <div class="br-head" id="headQF">
+      <h2>Quarter Final</h2>
+      <p id="dateQF">Date: 21 Nov 2026</p>
+    </div>
+    <div class="br-grid qf" id="gridQF"></div>
+
+    <!-- ---------- SEMI FINAL ---------- -->
+    <div class="br-head" id="headSF">
+      <h2>Semi Final</h2>
+      <p id="dateSF">Date: 21 Nov 2026</p>
+    </div>
+    <div class="br-grid sf" id="gridSF"></div>
+
+    <!-- ---------- FINAL ---------- -->
+    <div class="br-final" id="gridFinal"></div>
+  </div>
+</div>
+
+<!-- flow buttons -->
+<div class="flow-bar" id="flowBar">
+  <button class="flow-btn ghost" id="btnFlowBoard">&larr; DRAW BOARD</button>
+  <button class="flow-btn" id="btnFlowNew">+ NEW MATCH DRAW</button>
+</div>
+
+<!-- operator strip -->
+<div class="op-strip" id="opStrip">
+  <span class="op-tag">OPERATOR</span>
+  <button class="op-btn" id="btnFull">FULLSCREEN <kbd>F</kbd></button>
+  <button class="op-btn" id="btnExport">EXPORT PNG <kbd>E</kbd></button>
+  <button class="op-btn" id="btnHide">HIDE <kbd>C</kbd></button>
+  <span class="op-state" id="opState">—</span>
+</div>
+
+<div class="toast-host" id="toastHost"></div>
+
+<script src="js/database.js"></script>
+<script src="js/storage.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/scene.js"></script>
+<script src="js/export.js"></script>
+<script src="js/bracket.js"></script>
+</body>
+</html>

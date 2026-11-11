@@ -1,0 +1,228 @@
+/* =====================================================================
+   bracket.css  --  SCREEN 04 : the complete tournament bracket
+   ---------------------------------------------------------------------
+   The reference artwork is 2560x1280; this is the same bracket fitted
+   to 1920x1080 so it fills a normal screen, projector or LED wall and
+   matches every other export.
+
+   Column plan across 1920:
+     First Round   2 cols  x  8 rows   (the 32 drawn logos)
+     Second Round  2 cols  x  4 rows   (M:xx WINNER placeholders)
+     Quarter Final 1 col   x  4 rows
+     Semi Final    1 col   x  2 rows
+     Final         1 card
+   ===================================================================== */
+
+body.presentation { overflow: hidden; background: #000; cursor: none; }
+body.presentation.show-cursor { cursor: default; }
+
+.scene-canvas { position: absolute; inset: 0; width: 1920px; height: 1080px; }
+.bg-dim {
+  position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(180deg, rgba(5,1,8,.45), rgba(5,1,8,.25) 45%, rgba(5,1,8,.55));
+}
+
+.br-tlogo {
+  position: absolute;
+  top: 26px; right: 98px;
+  width: 282px; height: 306px;
+  object-fit: contain; object-position: center;
+  z-index: 7;
+  filter: drop-shadow(0 8px 26px rgba(0, 0, 0, .6));
+}
+
+/* =====================================================================
+   ROUND HEADINGS
+   ===================================================================== */
+.br-head { position: absolute; z-index: 6; }
+.br-head h2 {
+  margin: 0;
+  font-family: var(--board);
+  font-size: 40px;
+  line-height: 44px;
+  font-weight: 700;
+  color: #fff;
+  text-shadow: 0 3px 14px rgba(0, 0, 0, .6);
+  white-space: nowrap;
+}
+.br-head p {
+  margin: 4px 0 0;
+  font-family: var(--board);
+  font-size: 19px;
+  line-height: 23px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, .95);
+  text-shadow: 0 2px 10px rgba(0, 0, 0, .6);
+  white-space: nowrap;
+}
+.br-head p:empty { display: none; }
+
+#headR1 { left: 26px;   top: 26px;  }
+#headR2 { left: 672px;  top: 188px; }
+#headQF { left: 1140px; top: 214px; }
+#headSF { left: 1452px; top: 348px; }
+
+/* =====================================================================
+   GRIDS
+   ===================================================================== */
+.br-grid { position: absolute; display: grid; z-index: 6; }
+
+.br-grid.r1 {
+  left: 26px; top: 148px;
+  width: 616px; height: 900px;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(8, 1fr);
+  column-gap: 12px; row-gap: 10px;
+  grid-auto-flow: column;              /* 01-08 down, then 09-16 */
+}
+.br-grid.r2 {
+  left: 672px; top: 300px;
+  width: 438px; height: 596px;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  column-gap: 12px; row-gap: 14px;
+}
+.br-grid.qf {
+  left: 1140px; top: 300px;
+  width: 268px; height: 596px;
+  grid-template-rows: repeat(4, 1fr);
+  row-gap: 14px;
+}
+.br-grid.sf {
+  left: 1452px; top: 424px;
+  width: 268px; height: 296px;
+  grid-template-rows: repeat(2, 1fr);
+  row-gap: 14px;
+}
+
+/* =====================================================================
+   CARD SHELL  (shared by every round)
+   ===================================================================== */
+.br-card {
+  display: flex;
+  flex-direction: column;
+  padding: 3px;
+  border-radius: 13px;
+  background: #fff;
+  box-shadow: 0 5px 14px rgba(0, 0, 0, .45);
+  overflow: hidden;
+}
+.br-strip {
+  flex: none;
+  display: grid;
+  place-items: center;
+  border-radius: 10px 10px 0 0;
+  background: linear-gradient(180deg, var(--ref-pink-2) 0%, var(--ref-pink) 55%, #e0156f 100%);
+  font-family: var(--board);
+  font-weight: 700;
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, .22);
+  white-space: nowrap;
+}
+.br-body {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  justify-items: center;
+  background: #fff;
+  border-radius: 0 0 10px 10px;
+  min-height: 0;
+}
+.br-vs {
+  font-family: var(--board);
+  font-weight: 800;
+  color: var(--ref-pink);
+  line-height: 1;
+}
+
+/* ---- First Round: real logos ---- */
+.r1 .br-strip { height: 25px; font-size: 15px; }
+.r1 .br-body  { padding: 5px 8px; }
+.r1 .br-vs    { font-size: 23px; padding: 0 3px; }
+.r1 .br-slot {
+  width: 118px; height: 62px;
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden;
+}
+.r1 .br-slot img {
+  max-width: 118px; max-height: 62px;
+  width: auto; height: auto;
+  object-fit: contain; object-position: center;
+}
+.r1 .br-slot .ini {
+  font-family: var(--board); font-size: 20px; font-weight: 800; color: #c9bfd0;
+}
+.r1 .br-slot .ini:empty { display: none; }
+
+/* ---- Later rounds: WINNER placeholders ---- */
+.r2 .br-strip, .qf .br-strip, .sf .br-strip { height: 25px; font-size: 15px; }
+.r2 .br-body,  .qf .br-body,  .sf .br-body  { padding: 4px 6px; }
+.r2 .br-vs,    .qf .br-vs,    .sf .br-vs    { font-size: 22px; padding: 0 3px; }
+
+.br-ph {
+  font-family: var(--board);
+  font-size: 13px;
+  line-height: 15px;
+  font-weight: 700;
+  color: var(--ref-pink);
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* =====================================================================
+   FINAL
+   ===================================================================== */
+.br-final {
+  position: absolute;
+  left: 1748px; top: 436px;
+  width: 152px; height: 272px;
+  z-index: 6;
+}
+.br-final .br-card { height: 100%; }
+.br-final .br-strip { height: 34px; font-size: 21px; letter-spacing: .06em; }
+.br-final .br-body {
+  grid-template-columns: 1fr;
+  grid-template-rows: auto auto auto;
+  gap: 10px;
+  padding: 12px 6px;
+  align-content: center;
+}
+.br-final .br-date {
+  font-family: var(--board);
+  font-size: 12px;
+  font-weight: 700;
+  color: #4a4455;
+  text-align: center;
+  white-space: nowrap;
+}
+.br-final .br-vs { font-size: 30px; }
+
+/* =====================================================================
+   FLOW + OPERATOR BARS  (same as the other presentation screens)
+   ===================================================================== */
+.op-strip {
+  position: fixed; z-index: 300;
+  bottom: 14px; left: 50%;
+  transform: translateX(-50%) translateY(140%);
+  display: flex; align-items: center; gap: 5px;
+  padding: 5px 9px; border-radius: 30px;
+  background: rgba(10, 4, 16, .93);
+  border: 1px solid rgba(226, 19, 110, .40);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, .7);
+  backdrop-filter: blur(10px);
+  transition: transform .28s var(--ease), opacity .28s;
+  opacity: 0;
+}
+.op-strip.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+.op-tag { font-size: 7px; font-weight: 700; letter-spacing: .16em; color: var(--pink-2); padding-right: 3px; }
+.op-btn {
+  border: 0; border-radius: 24px; padding: 5px 10px;
+  background: rgba(255, 255, 255, .08); color: #fff;
+  font-size: 8.5px; font-weight: 700; letter-spacing: .08em;
+  display: flex; align-items: center; gap: 5px;
+  transition: background .18s;
+}
+.op-btn:hover { background: rgba(226, 19, 110, .40); }
+.op-btn kbd { font-family: var(--ui); font-size: 7.5px; padding: 1px 4px; border-radius: 3px; background: rgba(255, 255, 255, .14); }
+.op-state { font-size: 8px; letter-spacing: .08em; color: var(--muted); padding-left: 3px; max-width: 190px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }

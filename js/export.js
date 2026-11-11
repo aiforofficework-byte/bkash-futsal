@@ -678,6 +678,215 @@
     ctx.restore();
   }
 
+
+  /* ================================================================
+     SCREEN 04  --  FULL TOURNAMENT BRACKET
+     Geometry mirrors css/bracket.css.
+     ================================================================ */
+  var BR = {
+    r1:    { x: 26,   y: 148, w: 616, h: 900, cols: 2, rows: 8, gx: 12, gy: 10 },
+    r2:    { x: 672,  y: 300, w: 438, h: 596, cols: 2, rows: 4, gx: 12, gy: 14, rowMajor: true },
+    qf:    { x: 1140, y: 300, w: 268, h: 596, cols: 1, rows: 4, gx: 0,  gy: 14 },
+    sf:    { x: 1452, y: 424, w: 268, h: 296, cols: 1, rows: 2, gx: 0,  gy: 14 },
+    final: { x: 1748, y: 436, w: 152, h: 272 },
+    heads: [
+      { x: 26,   y: 26,  title: null },   /* round title comes from branding */
+      { x: 672,  y: 188, title: 'Second Round' },
+      { x: 1140, y: 214, title: 'Quarter Final' },
+      { x: 1452, y: 348, title: 'Semi Final' }
+    ],
+    pad: 3, radius: 13, innerR: 10, stripH: 25, stripPx: 15
+  };
+
+  function brCell(g, i) {
+    var cw = (g.w - g.gx * (g.cols - 1)) / g.cols;
+    var ch = (g.h - g.gy * (g.rows - 1)) / g.rows;
+    /* First Round flows down each column; the later rounds read across
+       each row, exactly as the printed artwork lays them out. */
+    var col, row;
+    if (g.rowMajor) { row = Math.floor(i / g.cols); col = i % g.cols; }
+    else            { col = Math.floor(i / g.rows); row = i % g.rows; }
+    return { x: g.x + col * (cw + g.gx), y: g.y + row * (ch + g.gy), w: cw, h: ch };
+  }
+
+  /* white card shell with its pink strip; returns the body rect */
+  function brCard(ctx, x, y, w, h, label, stripH, stripPx) {
+    stripH = stripH || BR.stripH;
+    stripPx = stripPx || BR.stripPx;
+    var pad = BR.pad;
+
+    ctx.save();
+    ctx.shadowColor = 'rgba(0,0,0,.45)';
+    ctx.shadowBlur = 14;
+    ctx.shadowOffsetY = 5;
+    ctx.fillStyle = '#ffffff';
+    roundRect(ctx, x, y, w, h, BR.radius);
+    ctx.fill();
+    ctx.restore();
+
+    var sx = x + pad, sy = y + pad, sw = w - pad * 2;
+    var sg = ctx.createLinearGradient(0, sy, 0, sy + stripH);
+    sg.addColorStop(0, C.refPink2);
+    sg.addColorStop(0.55, C.refPink);
+    sg.addColorStop(1, '#e0156f');
+    ctx.fillStyle = sg;
+    roundRect(ctx, sx, sy, sw, stripH, [BR.innerR, BR.innerR, 0, 0]);
+    ctx.fill();
+
+    ctx.save();
+    ctx.fillStyle = C.white;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.font = '700 ' + stripPx + 'px ' + BOARD;
+    ctx.shadowColor = 'rgba(0,0,0,.22)';
+    ctx.shadowBlur = 3;
+    ctx.fillText(label, x + w / 2, sy + stripH / 2 + 1);
+    ctx.restore();
+
+    return { x: x + pad, y: sy + stripH, w: w - pad * 2, h: h - pad * 2 - stripH };
+  }
+
+  /* two-line "M:01 / WINNER" placeholder */
+  function brPlaceholder(ctx, text, cx, cy) {
+    ctx.save();
+    ctx.fillStyle = C.refPink;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.font = '700 13px ' + BOARD;
+    var lines = text.split('|');
+    var lh = 15;
+    var top = cy - ((lines.length - 1) * lh) / 2;
+    lines.forEach(function (ln, i) { ctx.fillText(ln, cx, top + i * lh); });
+    ctx.restore();
+  }
+
+  function brVs(ctx, cx, cy, px) {
+    ctx.save();
+    ctx.fillStyle = C.refPink;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.font = '800 ' + px + 'px ' + BOARD;
+    ctx.fillText('VS', cx, cy + 1);
+    ctx.restore();
+  }
+
+  function renderBracket(canvas) {
+    var b = Store.getState().branding;
+    var ms = Store.matches();
+
+    var keys = [b.boardBgKey, b.logoKey];
+    ms.forEach(function (m) {
+      if (m.left)  keys.push(m.left.logoKey);
+      if (m.right) keys.push(m.right.logoKey);
+    });
+
+    return fontsReady()
+      .then(function () { return Scene.ready(); })
+      .then(function () { return loadMany(keys); })
+      .then(function (imgs) {
+        canvas.width = W;
+        canvas.height = H;
+        var ctx = canvas.getContext('2d');
+        ctx.imageSmoothingEnabled = true;
+        if ('imageSmoothingQuality' in ctx) ctx.imageSmoothingQuality = 'high';
+        ctx.clearRect(0, 0, W, H);
+        ctx.textBaseline = 'alphabetic';
+
+        /* ---------- background ---------- */
+        var custom = imgs[b.boardBgKey];
+        if (custom) {
+          drawCover(ctx, custom, 0, 0, W, H);
+          var dim = ctx.createLinearGradient(0, 0, 0, H);
+          dim.addColorStop(0, 'rgba(5,1,8,.45)');
+          dim.addColorStop(0.45, 'rgba(5,1,8,.25)');
+          dim.addColorStop(1, 'rgba(5,1,8,.55)');
+          ctx.fillStyle = dim;
+          ctx.fillRect(0, 0, W, H);
+        } else {
+          Scene.paintScene(ctx, 'board', true);
+        }
+
+        if (imgs[b.logoKey]) drawContain(ctx, imgs[b.logoKey], 1540, 26, 282, 306);
+
+        /* ---------- round headings ---------- */
+        BR.heads.forEach(function (hd) {
+          var title = hd.title || b.roundTitle;
+          ctx.save();
+          ctx.textAlign = 'left';
+          ctx.fillStyle = C.white;
+          ctx.shadowColor = 'rgba(0,0,0,.6)';
+          ctx.shadowBlur = 14;
+          ctx.font = '700 40px ' + BOARD;
+          ctx.fillText(title, hd.x, hd.y + 36);
+          if (b.matchDate) {
+            ctx.font = '600 19px ' + BOARD;
+            ctx.fillStyle = 'rgba(255,255,255,.95)';
+            ctx.shadowBlur = 10;
+            ctx.fillText(b.matchDate, hd.x, hd.y + 62);
+          }
+          ctx.restore();
+        });
+
+        /* ---------- First Round: the drawn logos ---------- */
+        ms.forEach(function (m, i) {
+          var c = brCell(BR.r1, i);
+          var body = brCard(ctx, c.x, c.y, c.w, c.h, 'Match ' + Store.pad2(i + 1));
+          var cy = body.y + body.h / 2;
+          var padX = 8;
+          ctx.font = '800 23px ' + BOARD;
+          var vsW = ctx.measureText('VS').width;
+          var track = (body.w - padX * 2 - (vsW + 6)) / 2;
+          var lcx = body.x + padX + track / 2;
+          var rcx = body.x + body.w - padX - track / 2;
+          brVs(ctx, body.x + body.w / 2, cy, 23);
+          var sw2 = Math.min(118, track), sh2 = 62;
+          drawSlot(ctx, m.left,  lcx, cy, sw2, sh2, imgs);
+          drawSlot(ctx, m.right, rcx, cy, sw2, sh2, imgs);
+        });
+
+        /* ---------- later rounds: WINNER placeholders ---------- */
+        function placeholders(g, prefix, feeder, count) {
+          for (var i = 0; i < count; i++) {
+            var c = brCell(g, i);
+            var body = brCard(ctx, c.x, c.y, c.w, c.h, prefix + '-' + Store.pad2(i + 1));
+            var cy = body.y + body.h / 2;
+            var padX = 6;
+            ctx.font = '800 22px ' + BOARD;
+            var vsW = ctx.measureText('VS').width;
+            var track = (body.w - padX * 2 - (vsW + 6)) / 2;
+            brVs(ctx, body.x + body.w / 2, cy, 22);
+            brPlaceholder(ctx, feeder + ':' + Store.pad2(i * 2 + 1) + '|WINNER',
+              body.x + padX + track / 2, cy);
+            brPlaceholder(ctx, feeder + ':' + Store.pad2(i * 2 + 2) + '|WINNER',
+              body.x + body.w - padX - track / 2, cy);
+          }
+        }
+        placeholders(BR.r2, 'SR', 'M',  8);
+        placeholders(BR.qf, 'QF', 'SR', 4);
+        placeholders(BR.sf, 'SF', 'QF', 2);
+
+        /* ---------- Final ---------- */
+        var f = BR.final;
+        var fb = brCard(ctx, f.x, f.y, f.w, f.h, 'FINAL', 34, 21);
+        var fcx = fb.x + fb.w / 2;
+        var top = fb.y + 20;
+        if (b.matchDate) {
+          ctx.save();
+          ctx.fillStyle = '#4a4455';
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.font = '700 12px ' + BOARD;
+          ctx.fillText(b.matchDate, fcx, top);
+          ctx.restore();
+        }
+        brPlaceholder(ctx, 'SF:01|WINNER', fcx, top + 52);
+        brVs(ctx, fcx, top + 110, 30);
+        brPlaceholder(ctx, 'SF:02|WINNER', fcx, top + 168);
+
+        return canvas;
+      });
+  }
+
   /* ================================================================
      DOWNLOAD
      ================================================================ */
@@ -762,14 +971,28 @@
 
   function renderDrawBoardSafe(c) { return renderBoard(c); }
 
+  function exportBracket() {
+    UI.toast('Rendering 1920\u00d71080 Full Bracket\u2026');
+    var name = 'full-bracket-' + stamp() + '.png';
+    return renderBracket(offscreen())
+      .then(function (c) { return canvasToPng(c, name); })
+      .then(function () { plateWarning(); UI.toast('Full Bracket PNG exported (1920\u00d71080).', 'ok'); })
+      .catch(function (err) {
+        console.error(err);
+        UI.toast(explain(err), 'err', 10000);
+      });
+  }
+
   function forget(key) { delete imgCache[key]; }
 
   global.Exporter = {
     W: W, H: H,
     renderLive: renderLive,
     renderBoard: renderBoard,
+    renderBracket: renderBracket,
     exportLiveResult: exportLiveResult,
     exportDrawBoard: exportDrawBoard,
+    exportBracket: exportBracket,
     forget: forget
   };
 })(window);

@@ -26,3 +26,7 @@ $RECYCLE.BIN/
 draw-board-*.png
 live-result-*.png
 futsal-draw-backup.json
+
+# the raw logo drop from the designer
+team logo/
+final.jpeg

@@ -11,6 +11,7 @@ Three screens that stay in sync in real time:
 | 01 | `index.html` | Team management + manual lottery control panel (operator) |
 | 02 | `live-result.html` | One enlarged match card, live on the big screen |
 | 03 | `draw-board.html` | The complete 16-match draw board |
+| 04 | `bracket.html` | Full tournament bracket, First Round through the Final |
 
 ---
 
@@ -96,15 +97,36 @@ By default the operator can run the whole event from a single window:
        |  both teams placed  ->  this tab moves on automatically
        v
   live-result.html    the match, big, as one enlarged card
-       |
+       |                 |
+       |                 +-- DOWNLOAD & NEXT MATCH  saves the PNG and
+       |                     blanks the card for the next draw
        |  click  FULL DRAW BOARD  ->
        v
   draw-board.html     all 16 matches so far
-       |
+       |                 |
+       |                 +-- once 16/16 are set:  FULL BRACKET ->
+       |                                            bracket.html
        |  click  + NEW MATCH DRAW  ->
        v
   index.html          ready for the next match
 ```
+
+### DOWNLOAD & NEXT MATCH (Screen 02)
+
+As soon as both teams of a match are on screen, a pink button appears at
+the bottom. One click saves that match as a 1920x1080 PNG **and** clears the
+card to an empty one carrying the next match number, so the screen is ready
+for the following draw without dropping back to the standby headline. The
+moment the operator picks the next first team, it fills in as usual.
+
+### The full bracket (Screen 04)
+
+Once all 16 first-round matches are drawn, a **FULL BRACKET** button appears
+on the draw board (shortcut `V`). It opens `bracket.html`: the 32 drawn logos
+down the left under *First Round*, then Second Round, Quarter Final, Semi
+Final and the Final. Those later rounds stay as `M:01 WINNER` style
+placeholders -- a draw board does not know who wins. It exports to
+1920x1080 PNG with `E` like the other screens.
 
 The **AUTO-ADVANCE TO LIVE RESULT** checkbox on the lottery tab turns the
 automatic jump off if you would rather stay on the control panel.
@@ -261,12 +283,14 @@ bkash Footsal/
 ├── index.html              Screen 01 — control panel  (START HERE)
 ├── live-result.html        Screen 02 — live match card
 ├── draw-board.html         Screen 03 — 16-match board
+├── bracket.html            Screen 04 — full tournament bracket
 │
 ├── css/
 │   ├── common.css          design tokens, toast, 16:9 stage scaler
 │   ├── admin.css           Screen 01 (light / bKash)
 │   ├── live-result.css     Screen 02
-│   └── draw-board.css      Screen 03
+│   ├── draw-board.css      Screen 03
+│   └── bracket.css         Screen 04
 │
 ├── js/
 │   ├── logo-manifest.js    list of files in /LOGO  (regenerate if you add logos)
@@ -280,7 +304,8 @@ bkash Footsal/
 │   ├── branding.js         Screen 01 — logo & background uploads
 │   ├── admin.js            Screen 01 — bootstrap, tabs, exports
 │   ├── live-result.js      Screen 02 logic
-│   └── draw-board.js       Screen 03 logic
+│   ├── draw-board.js       Screen 03 logic
+│   └── bracket.js          Screen 04 logic
 │
 ├── LOGO/                   your 31 team logos (PNG)
 ├── assets/                 optional: teams / backgrounds / tournament art

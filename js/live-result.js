@@ -20,6 +20,7 @@
   var HOVER_BAND = 150;    // px up from the bottom edge that reveals the bars
   var pinned = false;      // C key keeps them up
   var hintTimer = null;
+  var clearedMatch = null; // index of the match already saved and cleared
 
   function cache() {
     [
@@ -29,7 +30,7 @@
       'slotLeft', 'logoLeft', 'initialsLeft',
       'slotRight', 'logoRight', 'initialsRight', 'slotWaiting',
       'opStrip', 'opState', 'btnFull', 'btnExport', 'btnHide',
-      'flowBar', 'btnFlowNext'
+      'flowBar', 'btnFlowNext', 'nextBar', 'btnDownloadNext'
     ].forEach(function (id) { el[id] = document.getElementById(id); });
   }
 
@@ -101,6 +102,7 @@
     if (!match) {
       el.idleBlock.classList.remove('hidden');
       el.matchCard.classList.add('hidden');
+      el.nextBar.classList.add('hidden-ui');
       prev = { matchIndex: null, leftId: null, rightId: null, idle: true };
       setOpState('STANDBY — no team drawn yet');
       return;
@@ -108,6 +110,13 @@
 
     el.idleBlock.classList.add('hidden');
     el.matchCard.classList.remove('hidden');
+
+    /* This match was saved and cleared away: show an empty card for the
+       match that comes next, until the operator picks its first team. */
+    if (clearedMatch === match.index) {
+      renderEmptyCard(match.number + 1);
+      return;
+    }
 
     var leftId  = match.left  ? match.left.id  : null;
     var rightId = match.right ? match.right.id : null;
@@ -139,7 +148,36 @@
       setOpState('MATCH-' + Store.pad2(match.number) + ' — waiting for opponent');
     }
 
+    /* the button only makes sense once both teams are in */
+    el.nextBar.classList.toggle('hidden-ui', !match.complete);
+
     prev = { matchIndex: match.index, leftId: leftId, rightId: rightId, idle: false };
+  }
+
+  /* ------------------------------------------------ cleared-card state
+     A blank card carrying the next match number, so the screen is ready
+     for the draw that follows without dropping all the way back to the
+     standby headline. */
+  function renderEmptyCard(number) {
+    el.nextBar.classList.add('hidden-ui');
+
+    if (number > Store.MATCH_COUNT) {
+      el.matchCard.classList.add('hidden');
+      el.idleBlock.classList.remove('hidden');
+      el.idleBlock.querySelector('h2').innerHTML = 'ALL 16 MATCHES<br>ARE DRAWN';
+      setOpState('DRAW COMPLETE');
+      return;
+    }
+
+    el.matchStrip.textContent = 'Match-' + Store.pad2(number);
+    paintSlot(null, el.logoLeft, el.initialsLeft, el.slotLeft);
+    el.slotRight.classList.remove('hidden');
+    el.slotWaiting.classList.add('hidden');
+    paintSlot(null, el.logoRight, el.initialsRight, el.slotRight);
+    replay(el.matchCard, 'flip');
+
+    prev = { matchIndex: null, leftId: null, rightId: null, idle: false };
+    setOpState('MATCH-' + Store.pad2(number) + ' — ready for the next draw');
   }
 
   /* Resolve every image URL before painting so no logo ever flashes.
@@ -181,6 +219,17 @@
   function initFlow() {
     el.btnFlowNext.addEventListener('click', function () {
       UI.go('draw-board.html');
+    });
+
+    el.btnDownloadNext.addEventListener('click', function () {
+      var match = Store.currentMatch();
+      if (!match || !match.complete) return;
+      el.btnDownloadNext.disabled = true;
+      Exporter.exportLiveResult().then(function () {
+        el.btnDownloadNext.disabled = false;
+        clearedMatch = match.index;     // blank the card for the next draw
+        render();
+      });
     });
   }
 

@@ -25,7 +25,7 @@
       'stage', 'sceneCanvas', 'bgImage', 'bgDim', 'tLogo', 'tName',
       'roundTitle', 'matchDate', 'boardGrid',
       'opStrip', 'opState', 'btnFull', 'btnExport', 'btnHide',
-      'flowBar', 'btnFlowNew', 'btnFlowLive'
+      'flowBar', 'btnFlowNew', 'btnFlowLive', 'btnFlowBracket'
     ].forEach(function (id) { el[id] = document.getElementById(id); });
   }
 
@@ -206,15 +206,17 @@
     el.btnFlowLive.addEventListener('click', function () {
       UI.go('live-result.html');
     });
+    el.btnFlowBracket.addEventListener('click', function () {
+      UI.go('bracket.html');
+    });
   }
 
   /* The button reads DRAW COMPLETE once all 16 matches are set. */
   function renderFlow() {
-    if (Store.isDrawComplete()) {
-      el.btnFlowNew.textContent = '✓ DRAW COMPLETE';
-    } else {
-      el.btnFlowNew.textContent = '+ NEW MATCH DRAW';
-    }
+    var done = Store.isDrawComplete();
+    el.btnFlowNew.textContent = done ? '✓ DRAW COMPLETE' : '+ NEW MATCH DRAW';
+    /* the full bracket only exists once every first-round pair is set */
+    el.btnFlowBracket.classList.toggle('hidden', !done);
   }
 
   function initOperator() {
@@ -242,6 +244,7 @@
         else { pinned = true; showBars(); }
       }
       else if (k === 'n') UI.go('index.html#lottery');
+      else if (k === 'v' && Store.isDrawComplete()) UI.go('bracket.html');
     });
 
     global.addEventListener('dblclick', function () {
